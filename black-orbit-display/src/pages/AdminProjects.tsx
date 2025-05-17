@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import AdminSection from "@/components/AdminSection";
-import { sectionSchemas, mockData } from "@/lib/utils";
+import { sectionSchemas } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Pencil, Trash2, ExternalLink, Github, Star } from "lucide-react";
+import { Pencil, Trash2, ExternalLink, Star } from "lucide-react";
+import axios from "axios";
+import { toast } from "@/components/ui/sonner";
 
 interface ProjectItemProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   item: any;
   onEdit: (item: any) => void;
   onDelete: (id: string) => void;
@@ -95,13 +97,43 @@ const ProjectItem = ({ item, onEdit, onDelete }: ProjectItemProps) => {
 };
 
 const AdminProjects = () => {
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchProjects = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get("/api/projects");
+      setProjects(response.data);
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+      toast.error("Failed to fetch projects.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteProject = async (id: string) => {
+    try {
+      await axios.delete(`/api/projects/${id}`);
+      toast.success("Project deleted successfully.");
+      fetchProjects(); // Refetch projects after deletion
+    } catch (error) {
+      console.error("Error deleting project:", error);
+      toast.error("Failed to delete project.");
+    }
+  };
+
+  useEffect(() => {
+    fetchProjects();
+  }, []); // Fetch projects on component mount
+
   return (
     <AdminSection
       title="Projects"
-      description="Manage your portfolio projects. Add, edit, or remove projects to showcase your work."
-      schema={sectionSchemas.projects}
-      initialData={mockData.projects}
-      itemComponent={ProjectItem}
+      description="Manage your portfolio projects. Add, edit, or remove projects to showcase your work."      schema={sectionSchemas.projects}
+      initialData={projects} // Pass fetched projects
+      itemComponent={(props: any) => <ProjectItem {...props} onDelete={handleDeleteProject} />} // Pass handleDeleteProject
     />
   );
 };

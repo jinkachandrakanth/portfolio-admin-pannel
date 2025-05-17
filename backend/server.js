@@ -2,6 +2,10 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import projectsRouter from './routes/projects.js';
+import skillsRouter from './routes/skills.js';
+import educationRouter from './routes/education.js';
+import experienceRouter from './routes/experience.js';
+import certificationsRouter from './routes/certifications.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -59,5 +63,9 @@ const startServer = async () => {
 // Routes
 app.use('/api/projects', projectsRouter);
 
+app.use('/api/skills', skillsRouter);
+app.use('/api/education', educationRouter);
+app.use('/api/experience', experienceRouter);
+app.use('/api/certifications', certificationsRouter);
 // Start the server
 startServer(); 

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/components/ui/sonner";
 import AdminNavbar from "../components/AdminNavbar";
+import axios from "axios";
 import { mockData } from "@/lib/utils";
 import {
   LayoutDashboard,
@@ -49,14 +50,20 @@ const AdminDashboard = () => {
         setIsLoading(true);
 
         // In a real app, this would be an API call
-        // For demo, we'll use mock data
+        // For now, we'll fetch projects from the backend and use mock data for others
+        const projectsResponse = await axios.get("/api/projects/");
+        const projects = projectsResponse.data;
+
         const stats: SectionStats[] = [
           {
             name: "Projects",
             path: "/admin/projects",
-            count: mockData.projects.length,
+            count: projects.length,
             icon: <Briefcase size={20} />,
             color: "from-purple-500 to-indigo-600"
+          },
+          // Keep mock data for other sections for now
+ {
           },
           {
             name: "Skills",
@@ -91,7 +98,7 @@ const AdminDashboard = () => {
         // Get recent items from all sections
         const getRecentItems = () => {
           const allItems = [
-            ...mockData.projects.map(item => ({ ...item, section: 'projects', path: '/admin/projects' })),
+            ...projects.map((item: any) => ({ ...item, section: 'projects', path: '/admin/projects' })),
             ...mockData.skills.map(item => ({ ...item, section: 'skills', path: '/admin/skills' })),
             ...mockData.education.map(item => ({ ...item, section: 'education', path: '/admin/education' })),
             ...mockData.experience.map(item => ({ ...item, section: 'experience', path: '/admin/experience' })),
@@ -99,7 +106,7 @@ const AdminDashboard = () => {
           ];
 
           // Sort by some criteria (in a real app, this would be creation date)
-          // For demo, we'll just return the first 5 items
+          // For now, we'll just return the first 5 items
           return allItems.slice(0, 5);
         };
 
@@ -270,7 +277,7 @@ const AdminDashboard = () => {
             </CardHeader>
             <CardContent>
               {isLoading ? (
-                <p className="text-center py-4">Loading featured projects...</p>
+                <p className="text-center py-4">Loading projects...</p>
               ) : mockData.projects.filter(p => p.featured).length === 0 ? (
                 <p className="text-center py-4">No featured projects found</p>
               ) : (

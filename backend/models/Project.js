@@ -5,6 +5,9 @@ const projectSchema = new mongoose.Schema({
     description: { type: String, required: true },
     link: { type: String },
     technologies: [String],
-}, { timestamps: true });
+    image: { type: String },
+    featured: { type: Boolean, default: false },
+    date: { type: String },
+}, { timestamps: true }); // createdAt and updatedAt are automatically handled
 
 export default mongoose.model('Project', projectSchema); 
