@@ -7,7 +7,11 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://jinkachandrakanth2003:c1618%401234@cluster0.ksop6cl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 
-app.use(cors());
+// Middleware
+app.use(cors({
+    origin: ['http://localhost:8080', 'http://localhost:3000'],
+    credentials: true
+}));
 app.use(express.json());
 
 // Basic root route
@@ -15,15 +19,45 @@ app.get('/', (req, res) => {
     res.send('Portfolio API is running');
 });
 
-// Connect to MongoDB
-mongoose.connect(MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
-    .then(() => {
-        console.log('MongoDB connected');
-        app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-    })
-    .catch((err) => console.error('MongoDB connection error:', err));
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+});
 
-app.use('/api/projects', projectsRouter); 
+// Connect to MongoDB and start server
+const startServer = async () => {
+    try {
+        await mongoose.connect(MONGO_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+        console.log('MongoDB connected');
+
+        const server = app.listen(PORT, () => {
+            console.log(`Server running on port ${PORT}`);
+        });
+
+        // Handle server shutdown
+        process.on('SIGTERM', () => {
+            console.log('SIGTERM received. Shutting down gracefully...');
+            server.close(() => {
+                console.log('Server closed');
+                mongoose.connection.close(false, () => {
+                    console.log('MongoDB connection closed');
+                    process.exit(0);
+                });
+            });
+        });
+
+    } catch (err) {
+        console.error('Failed to start server:', err);
+        process.exit(1);
+    }
+};
+
+// Routes
+app.use('/api/projects', projectsRouter);
+
+// Start the server
+startServer(); 
