@@ -6,6 +6,7 @@ import skillsRouter from './routes/skills.js';
 import educationRouter from './routes/education.js';
 import experienceRouter from './routes/experience.js';
 import certificationsRouter from './routes/certifications.js';
+import contactRouter from './routes/contact.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -67,5 +68,6 @@ app.use('/api/skills', skillsRouter);
 app.use('/api/education', educationRouter);
 app.use('/api/experience', experienceRouter);
 app.use('/api/certifications', certificationsRouter);
+app.use('/api/contact', contactRouter);
 // Start the server
 startServer(); 

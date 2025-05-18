@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 
 const experienceData = [
@@ -32,40 +31,55 @@ const educationData = [
 ];
 
 const certificationData = [
-  "IBM NoSQL Certification",
-  "Microsoft AI-900 Certification",
-  "Great Learning Prompt Engineering Certificate",
-  "MongoDB Certification",
-  "Smart Internz MERN Full Stack Certification"
+  {
+    name: "IBM NoSQL Certification",
+    link: "https://drive.google.com/file/d/1jHt4Oh_Eb950SBQhaJkKYzUR5yCSPBsd/view",
+  },
+  {
+    name: "Microsoft AI-900 Certification",
+    link: "https://drive.google.com/file/d/1pVPBR49nh76XYBzHQGTncpNckU16Mf6m/view",
+  },
+  {
+    name: "Great Learning Prompt Engineering Certificate",
+    link: "https://drive.google.com/file/d/1YnMLfE2TcoYhL9YXcKnUwun0FlYaGUtM/view",
+  },
+  {
+    name: "MongoDB Certification",
+    link: "https://drive.google.com/file/d/1nQSoS2ogso0TlAHiHiP4htskNaiLI00x/view",
+  },
+  {
+    name: "Smart Internz Full Stack Developer (MERN Stack)",
+    link: "https://skillwallet.smartinternz.com/internships/mongo_db/d91caca74114d81fdfc578fca82f8d72",
+  },
 ];
 
-const ExperienceItem = ({ 
+const ExperienceItem = ({
   experience,
-  index 
-}: { 
+  index
+}: {
   experience: typeof experienceData[0],
   index: number
 }) => {
   return (
-    <div 
+    <div
       className="experience-item opacity-0 mb-12 relative"
       style={{ animationDelay: `${index * 200}ms` }}
     >
       {index < experienceData.length - 1 && (
         <div className="absolute left-3 top-10 bottom-0 w-px bg-gray-700"></div>
       )}
-      
+
       <div className="flex gap-6">
         <div className="flex-shrink-0 relative z-10">
           <div className="h-6 w-6 rounded-full bg-white"></div>
         </div>
-        
+
         <div>
           <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-2">
             <h3 className="text-xl font-semibold">{experience.position}</h3>
             <span className="text-gray-400 text-sm sm:text-base">@ {experience.company}</span>
           </div>
-          
+
           <p className="text-gray-500 mb-3">{experience.period}</p>
           <p className="text-gray-300">{experience.description}</p>
         </div>
@@ -74,27 +88,27 @@ const ExperienceItem = ({
   );
 };
 
-const EducationItem = ({ 
+const EducationItem = ({
   education,
-  index 
-}: { 
+  index
+}: {
   education: typeof educationData[0],
   index: number
 }) => {
   return (
-    <div 
+    <div
       className="education-item opacity-0 mb-12 relative"
       style={{ animationDelay: `${index * 200}ms` }}
     >
       {index < educationData.length - 1 && (
         <div className="absolute left-3 top-10 bottom-0 w-px bg-gray-700"></div>
       )}
-      
+
       <div className="flex gap-6">
         <div className="flex-shrink-0 relative z-10">
           <div className="h-6 w-6 rounded-full bg-white"></div>
         </div>
-        
+
         <div>
           <h3 className="text-xl font-semibold mb-1">{education.institution}</h3>
           <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-2">
@@ -139,7 +153,7 @@ const Experience = () => {
         <p className="text-gray-400 text-center max-w-2xl mx-auto mb-16">
           My professional journey and academic background
         </p>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           <div>
             <h3 className="text-2xl font-bold mb-8 border-b border-gray-700 pb-2">Work Experience</h3>
@@ -149,7 +163,7 @@ const Experience = () => {
               ))}
             </div>
           </div>
-          
+
           <div>
             <h3 className="text-2xl font-bold mb-8 border-b border-gray-700 pb-2">Education</h3>
             <div className="max-w-2xl mx-auto">
@@ -159,17 +173,24 @@ const Experience = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="mt-16">
           <h3 className="text-2xl font-bold mb-8 border-b border-gray-700 pb-2 text-center">Certifications</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {certificationData.map((cert, index) => (
-              <div 
-                key={cert} 
+              <div
+                key={cert.name}
                 className="certification-item opacity-0 glass-card p-4 rounded-lg text-center"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <p className="font-medium">{cert}</p>
+                <a
+                  href={cert.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium hover:underline text-white"
+                >
+                  {cert.name}
+                </a>
               </div>
             ))}
           </div>

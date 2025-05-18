@@ -1,7 +1,7 @@
 // Removed MongoDB-related code
 // This file should be used for server-side MongoDB operations only
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AdminSection from "@/components/AdminSection";
 import { sectionSchemas } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
@@ -59,12 +59,79 @@ const SkillItem = ({ item, onEdit, onDelete }: SkillItemProps) => {
 };
 
 const AdminSkills = () => {
+  const [skills, setSkills] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchSkills();
+  }, []);
+
+  const fetchSkills = async () => {
+    try {
+      const response = await fetch('/api/skills');
+      const data = await response.json();
+      setSkills(data);
+    } catch (error) {
+      console.error('Error fetching skills:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCreate = async (newSkill) => {
+    try {
+      const response = await fetch('/api/skills', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newSkill),
+      });
+      if (response.ok) {
+        fetchSkills();
+      }
+    } catch (error) {
+      console.error('Error creating skill:', error);
+    }
+  };
+
+  const handleUpdate = async (id, updatedSkill) => {
+    try {
+      const response = await fetch(`/api/skills/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedSkill),
+      });
+      if (response.ok) {
+        fetchSkills();
+      }
+    } catch (error) {
+      console.error('Error updating skill:', error);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch(`/api/skills/${id}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        fetchSkills();
+      }
+    } catch (error) {
+      console.error('Error deleting skill:', error);
+    }
+  };
+
   return (
     <AdminSection
       title="Skills"
       description="Manage your technical skills and categories."
       schema={sectionSchemas.skills}
       itemComponent={SkillItem}
+      items={skills}
+      loading={loading}
+      onCreate={handleCreate}
+      onUpdate={handleUpdate}
+      onDelete={handleDelete}
     />
   );
 };

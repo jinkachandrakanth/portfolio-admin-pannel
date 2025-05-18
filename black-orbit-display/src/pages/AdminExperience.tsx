@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AdminSection from "@/components/AdminSection";
 import { sectionSchemas } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
@@ -57,12 +57,79 @@ const ExperienceItem = ({ item, onEdit, onDelete }: ExperienceItemProps) => {
 };
 
 const AdminExperience = () => {
+    const [experiences, setExperiences] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetchExperiences();
+    }, []);
+
+    const fetchExperiences = async () => {
+        try {
+            const response = await fetch('/api/experience');
+            const data = await response.json();
+            setExperiences(data);
+        } catch (error) {
+            console.error('Error fetching experiences:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleCreate = async (newExperience) => {
+        try {
+            const response = await fetch('/api/experience', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newExperience),
+            });
+            if (response.ok) {
+                fetchExperiences();
+            }
+        } catch (error) {
+            console.error('Error creating experience:', error);
+        }
+    };
+
+    const handleUpdate = async (id, updatedExperience) => {
+        try {
+            const response = await fetch(`/api/experience/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedExperience),
+            });
+            if (response.ok) {
+                fetchExperiences();
+            }
+        } catch (error) {
+            console.error('Error updating experience:', error);
+        }
+    };
+
+    const handleDelete = async (id) => {
+        try {
+            const response = await fetch(`/api/experience/${id}`, {
+                method: 'DELETE',
+            });
+            if (response.ok) {
+                fetchExperiences();
+            }
+        } catch (error) {
+            console.error('Error deleting experience:', error);
+        }
+    };
+
     return (
         <AdminSection
             title="Experience"
             description="Manage your work experience and professional history."
             schema={sectionSchemas.experience}
             itemComponent={ExperienceItem}
+            items={experiences}
+            loading={loading}
+            onCreate={handleCreate}
+            onUpdate={handleUpdate}
+            onDelete={handleDelete}
         />
     );
 };

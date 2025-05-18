@@ -7,7 +7,7 @@ const projectsData = [
     description: "End-to-end AutoML pipeline automating ML workflow stages including preprocessing, model selection and hyperparameter tuning.",
     tech: ["Python", "TensorFlow", "Scikit-Learn", "PyTorch"],
     image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?q=80&w=800&auto=format&fit=crop",
-    link: "#",
+    link: "https://github.com/chandrakanth-jinka/AutoML ",
     date: "Jan 2025"
   },
   {
@@ -15,7 +15,7 @@ const projectsData = [
     description: "Web app that extracts and processes news articles for AI-powered chatbot interactions with comprehensive insights.",
     tech: ["Streamlit", "LangChain", "FAISS", "Hugging Face"],
     image: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=800&auto=format&fit=crop",
-    link: "#",
+    link: "https://github.com/chandrakanth-jinka/multi-link-news-articles-analysis--tool",
     date: "Dec 2024"
   },
   {
@@ -23,7 +23,7 @@ const projectsData = [
     description: "Interactive Power BI dashboard analyzing sales data with time-series forecasting for business planning.",
     tech: ["Power BI", "DAX", "Excel"],
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop",
-    link: "#",
+    link: "https://github.com/chandrakanth-jinka/Super-Store-Dashboard-and-Forecast",
     date: "Nov 2025"
   },
   {
@@ -31,7 +31,7 @@ const projectsData = [
     description: "CNN model for facial emotion recognition with web scraping for lyrics-based emotion classification.",
     tech: ["TensorFlow", "OpenCV", "BeautifulSoup", "Hugging Face"],
     image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop",
-    link: "#",
+    link: "https://github.com/chandrakanth-jinka/Facial-Expression-based-Music-Recommendation- ",
     date: "Jan 2025"
   },
   {
@@ -39,7 +39,7 @@ const projectsData = [
     description: "Full-stack web application for personal finance management with expense tracking and analytics.",
     tech: ["Python", "Flask", "SQLAlchemy", "Chart.js"],
     image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=800&auto=format&fit=crop",
-    link: "#",
+    link: "https://github.com/chandrakanth-jinka/Personal-Finance-Tracker",
     date: "2024"
   },
   {
@@ -47,21 +47,21 @@ const projectsData = [
     description: "Full-stack MERN application with responsive UI and RESTful APIs for flight reservation management.",
     tech: ["MongoDB", "Express.js", "React.js", "Node.js"],
     image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=800&auto=format&fit=crop",
-    link: "#",
+    link: "@https://github.com/chandrakanth-jinka/flight-booking-application",
     date: "July 2024"
   }
 ];
 
 const ProjectCard = ({ project, index }: { project: typeof projectsData[0], index: number }) => {
   return (
-    <div 
+    <div
       className="glass-card rounded-lg overflow-hidden project-item opacity-0"
       style={{ animationDelay: `${index * 150}ms` }}
     >
       <div className="h-48 bg-gray-800 overflow-hidden">
-        <img 
-          src={project.image} 
-          alt={project.title} 
+        <img
+          src={project.image}
+          alt={project.title}
           className="w-full h-full object-cover object-center opacity-70 hover:opacity-100 transition-opacity duration-300"
         />
       </div>
@@ -78,10 +78,10 @@ const ProjectCard = ({ project, index }: { project: typeof projectsData[0], inde
             </span>
           ))}
         </div>
-        <a 
-          href={project.link} 
+        <a
+          href={project.link}
           className="inline-flex items-center text-white font-medium hover:underline"
-          target="_blank" 
+          target="_blank"
           rel="noopener noreferrer"
         >
           View Project
@@ -125,7 +125,7 @@ const Projects = () => {
         <p className="text-gray-400 text-center max-w-2xl mx-auto mb-12">
           A selection of my recent work
         </p>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projectsData.map((project, index) => (
             <ProjectCard key={project.title} project={project} index={index} />

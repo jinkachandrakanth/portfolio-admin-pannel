@@ -54,7 +54,7 @@ const Hero = () => {
         </h1>
         
         <h2 className="text-xl md:text-2xl lg:text-3xl font-light text-gray-300 mb-8 opacity-0 animate-fade-in" style={{ animationDelay: '0.9s', animationFillMode: 'forwards' }}>
-          Computer Science Student & Full Stack Developer
+          Data Science & Full Stack Developer
         </h2>
         
         <p className="text-gray-400 max-w-xl mx-auto mb-12 opacity-0 animate-fade-in" style={{ animationDelay: '1.2s', animationFillMode: 'forwards' }}>
